@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const InputBox = ({todoList, setTodoList})=>{
+            const [text, setText] = useState('');
+            const inputRef = useRef(null);
+
+            const onChangeInput = (e) => {
+                setText(e.target.value);
+            };
+
+            const onClickAddButton = () => {
+                const nextTodoList = todoList.concat({
+                    id: todoList.length,
+                    text,
+                    checked: false,
+                });
+                setTodoList(nextTodoList);
+
+                setText('');
+                inputRef.current.focus();
+            };
+
+            return(
+                <div className="todoapp_inputbox">
+                    {/* 아이템 내용 입력 input */}
+                    <input
+                        type="text"
+                        name="todoItem"
+                        value={text}
+                        ref={inputRef}
+                        placeholer="할 일을 입력해주세요"
+                        className="todoapp_inputbox-inp"
+                        oncChange={onChangeInput}
+                    />
+                    {/* 입력 후 아이템 추가 버튼 */}
+                    <button
+                        type="submit"
+                        className="todoapp_inputbox-add-btn"
+                        onClick={onClickAddButton}
+                        >
+                        추가    
+                    </button>
+                </div>
+            );
+        };
+
+        InputBox.propTypes = {
+            todoList: PropTypes.arrayOff(
+                PropTypes.shape({
+                    id: PropTypes.number.isRequired,
+                    text: PropTypes.string.isRequired,
+                }).isRequired
+            ),
+            setTodoList: PropTypes.func.isRequired,
+        };
+
+    </script>
+</body>
+</html>
